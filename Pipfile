@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+aiogram = "*"
+tortoise-orm = "*"
+asyncpg = "*"
+uvloop = "*"
+ujson = "*"
+aiohttp = {extras = ["speedups"], version = "*"}
+aerich = "*"
+apscheduler = "*"
+beautifulsoup4 = "*"
+dateparser = "*"
+lxml = "*"
+envparse = "*"
+
+[requires]
+python_version = "3.8"
