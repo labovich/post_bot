@@ -54,7 +54,7 @@ def parse_page(page):
                 office = tds[2].get_text()
                 rows.append(Row(id=id, date=date, action=action, office=office))
     else:
-        action = page.find(id='Label48')
+        action = page.find(id='Label48').get_text()
         date = datetime.now().date()
         rows.append(Row(id=id, date=date, action=action, office=''))
 
