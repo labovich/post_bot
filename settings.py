@@ -10,7 +10,7 @@ POSTGRES_PORT = env.int("POSTGRES_PORT", default=5432)
 POSTGRES_PASSWORD = env.str("POSTGRES_PASSWORD", default="post_bot")
 POSTGRES_USER = env.str("POSTGRES_USER", default="post_bot")
 POSTGRES_DB = env.str("POSTGRES_DB", default="post_bot")
-POSTGRES_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+POSTGRES_URI = f"postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 TORTOISE_ORM = {
     "connections": {"default": POSTGRES_URI},

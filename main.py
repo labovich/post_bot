@@ -47,7 +47,8 @@ async def add_package(message: types.Message, user):
 
     for package in packages:
         action = await package.actions.order_by('-date').first()
-        mess += f'{id}. <code>{package.id}</code> - {package.description}\n {action.date}: {action.action}'
+        if action:
+            mess += f'{id}. <code>{package.id}</code> - {package.description}\n {action.date}: {action.action}'
         id += 1
 
     await message.reply(mess)
@@ -56,7 +57,7 @@ async def add_package(message: types.Message, user):
 async def on_startup(dp):
     await Tortoise.init(settings.TORTOISE_ORM)
     await Tortoise.generate_schemas()
-    scheduler.add_job(get_packages_status, trigger='cron', minute='*/1')
+    scheduler.add_job(get_packages_status, trigger='cron', hours='*/3')
     scheduler.start()
 
 

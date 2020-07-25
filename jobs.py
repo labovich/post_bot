@@ -1,5 +1,6 @@
 import asyncio
 import collections
+from datetime import datetime
 
 import aiohttp
 import dateparser
@@ -41,14 +42,21 @@ def parse_page(page):
 
     id = page.find(id='TxtNumPos').get('value')
 
-    for tr in page.find(id="GridInfo").find_all("tr"):
-        tds = tr.find_all('td')
-        if tds:
-            date = tds[0].get_text()
-            date = dateparser.parse(date).date()
-            action = tds[1].get_text()
-            office = tds[2].get_text()
-            rows.append(Row(id=id, date=date, action=action, office=office))
+    grid_info = page.find(id="GridInfo")
+
+    if grid_info:
+        for tr in grid_info.find_all("tr"):
+            tds = tr.find_all('td')
+            if tds:
+                date = tds[0].get_text()
+                date = dateparser.parse(date).date()
+                action = tds[1].get_text()
+                office = tds[2].get_text()
+                rows.append(Row(id=id, date=date, action=action, office=office))
+    else:
+        action = page.find(id='Label48')
+        date = datetime.now().date()
+        rows.append(Row(id=id, date=date, action=action, office=''))
 
     return rows
 
