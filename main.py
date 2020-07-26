@@ -36,6 +36,7 @@ async def add_package(message: types.Message, user, regexp_command):
         return
 
     await message.reply(f"You add package <code>{package_obj.id}</code>")
+    await get_packages_status([package_obj.id])
 
 
 @dp.message_handler(commands=['list'])

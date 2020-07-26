@@ -63,8 +63,10 @@ def parse_page(page):
     return rows
 
 
-async def get_packages_status():
-    ids = await Package.all().values_list('id', flat=True)
+async def get_packages_status(ids=None):
+    if ids is None:
+        ids = await Package.all().values_list('id', flat=True)
+
     print(ids)
 
     result = await parallel(ids)
