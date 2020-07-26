@@ -46,7 +46,7 @@ async def add_package(message: types.Message, user):
     packages = await user.packages
 
     for package in packages:
-        action = await package.actions.order_by('-order_num').last()
+        action = await package.actions.order_by('order_num').first()
         if action:
             mess += f'{id}. <code>{package.id}</code> - {package.description}\n {action.date}: {action.action}\n'
         id += 1
