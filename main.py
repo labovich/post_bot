@@ -51,7 +51,8 @@ async def add_package(message: types.Message, user):
             mess += f'{id}. <code>{package.id}</code> - {package.description}\n {action.date}: {action.action}\n'
         id += 1
 
-    await message.reply(mess)
+    if mess:
+        await message.reply(mess)
 
 
 async def on_startup(dp):
