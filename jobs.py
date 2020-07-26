@@ -11,7 +11,7 @@ from models import Package, Action, User
 
 SELECTED_URL = f'https://webservices.belpost.by/searchBy/'
 
-Row = collections.namedtuple('Row', 'id date action office')
+Row = collections.namedtuple('Row', 'id date action office order_num')
 
 
 async def fetch(session, url):
@@ -45,18 +45,20 @@ def parse_page(page):
     grid_info = page.find(id="GridInfo")
 
     if grid_info:
+        order_num = 0
         for tr in grid_info.find_all("tr"):
+            order_num += 1
             tds = tr.find_all('td')
             if tds:
                 date = tds[0].get_text()
                 date = dateparser.parse(date).date()
                 action = tds[1].get_text()
                 office = tds[2].get_text()
-                rows.append(Row(id=id, date=date, action=action, office=office))
+                rows.append(Row(id=id, date=date, action=action, office=office, order_num=order_num))
     else:
         action = page.find(id='Label48').get_text()
         date = datetime.now().date()
-        rows.append(Row(id=id, date=date, action=action, office=''))
+        rows.append(Row(id=id, date=date, action=action, office='', order_num=0))
 
     return rows
 
@@ -75,7 +77,7 @@ async def get_packages_status():
                 print(f'{row.id} - {row.action} exist')
             except DoesNotExist:
                 await Action.create(package_id=row.id, action=row.action,
-                                    date=row.date, office=row.office)
+                                    date=row.date, office=row.office, order_num=row.order_num)
                 user = await User.get(packages__id=row.id)
                 print(f'{row.id} - {row.action} created')
 
