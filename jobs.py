@@ -47,9 +47,9 @@ def parse_page(page):
     if grid_info:
         order_num = 0
         for tr in grid_info.find_all("tr"):
-            order_num += 1
             tds = tr.find_all('td')
             if tds:
+                order_num += 1
                 date = tds[0].get_text()
                 date = dateparser.parse(date).date()
                 action = tds[1].get_text()
