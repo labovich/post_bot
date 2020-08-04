@@ -65,7 +65,7 @@ def parse_page(page):
 
 async def get_packages_status(ids=None):
     if ids is None:
-        ids = await Package.all().values_list('id', flat=True)
+        ids = await Package.filter(done=False).all().values_list('id', flat=True)
 
     print(ids)
 
@@ -78,11 +78,15 @@ async def get_packages_status(ids=None):
                 await Action.get(package_id=row.id, action=row.action)
                 print(f'{row.id} - {row.action} exist')
             except DoesNotExist:
-                await Action.create(package_id=row.id, action=row.action,
-                                    date=row.date, office=row.office, order_num=row.order_num)
+                action = await Action.create(package_id=row.id, action=row.action,
+                                             date=row.date, office=row.office, order_num=row.order_num)
                 user = await User.get(packages__id=row.id)
                 print(f'{row.id} - {row.action} created')
 
                 from main import bot
                 message = f'Update status for <code>{row.id}</code> \nstatus {row.action} \noffice {row.office} \ndate {row.date}'
                 await bot.send_message(user.id, message)
+
+                if row.action == 'Уручана':
+                    action.package.done = True
+                    await action.package.save()

@@ -4,7 +4,7 @@ from aiogram.dispatcher import Dispatcher, filters
 from aiogram.utils import executor
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from tortoise import Tortoise
-from tortoise.exceptions import IntegrityError
+from tortoise.exceptions import IntegrityError, DoesNotExist
 
 import settings
 from jobs import get_packages_status
@@ -31,12 +31,25 @@ async def add_package(message: types.Message, user, regexp_command):
         package_obj = await Package.create(id=regexp_command.group(2),
                                            description=regexp_command.group(3), user=user)
     except IntegrityError:
-        package_obj = await Package.get(id=regexp_command.group(2))
+        package_obj = await Package.get(id=regexp_command.group(2), user=user)
         await message.reply(f"Package <code>{package_obj.id}</code> already exist")
         return
 
     await message.reply(f"You add package <code>{package_obj.id}</code>")
     await get_packages_status([package_obj.id])
+
+
+@dp.message_handler(filters.RegexpCommandsFilter(regexp_commands=['(\/done)\s(\w{2}\d{9}\w{2})\s([\w\s\-\.]+)']))
+async def done_package(message: types.Message, user, regexp_command):
+    try:
+        package_obj = await Package.get(id=regexp_command.group(2), user=user)
+    except DoesNotExist:
+        await message.reply(f"Package <code>{package_obj.id}</code> does not exist")
+        return
+
+    package_obj.done = True
+    await package_obj.save()
+    await message.reply(f"You add package <code>{package_obj.id} was done</code>")
 
 
 @dp.message_handler(commands=['list'])
