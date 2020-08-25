@@ -88,5 +88,7 @@ async def get_packages_status(ids=None):
                 await bot.send_message(user.id, message)
 
                 if row.action == 'Уручана':
-                    action.package.done = True
-                    await action.package.save()
+                    package = await action.package
+                    package.done = True
+                    await package.save()
+

@@ -40,7 +40,7 @@ async def add_package(message: types.Message, user, regexp_command):
     await get_packages_status([package_obj.id])
 
 
-@dp.message_handler(filters.RegexpCommandsFilter(regexp_commands=['(\/done)\s(\w{2}\d{9}\w{2})\s([\w\s\-\.]+)']))
+@dp.message_handler(filters.RegexpCommandsFilter(regexp_commands=['(\/done)\s(\w{2}\d{9}\w{2})']))
 async def done_package(message: types.Message, user, regexp_command):
     try:
         package_obj = await Package.get(id=regexp_command.group(2), user=user)
