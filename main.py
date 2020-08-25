@@ -29,7 +29,8 @@ async def send_welcome(message: types.Message):
 async def add_package(message: types.Message, user, regexp_command):
     try:
         package_obj = await Package.create(id=regexp_command.group(2),
-                                           description=regexp_command.group(3), user=user)
+                                           description=regexp_command.group(3),
+                                           user=user)
     except IntegrityError:
         package_obj = await Package.get(id=regexp_command.group(2), user=user)
         await message.reply(f"Package <code>{package_obj.id}</code> already exist")
@@ -44,12 +45,12 @@ async def done_package(message: types.Message, user, regexp_command):
     try:
         package_obj = await Package.get(id=regexp_command.group(2), user=user)
     except DoesNotExist:
-        await message.reply(f"Package <code>{package_obj.id}</code> does not exist")
+        await message.reply(f"Package <code>{regexp_command.group(2)}</code> does not exist")
         return
 
     package_obj.done = True
     await package_obj.save()
-    await message.reply(f"You add package <code>{package_obj.id} was done</code>")
+    await message.reply(f"You add package <code>{package_obj.id}</code> was done")
 
 
 @dp.message_handler(commands=['list'])
@@ -60,7 +61,7 @@ async def add_package(message: types.Message, user):
     packages = await user.packages
 
     for package in packages:
-        action = await package.actions.order_by('-date', '-order_num').first()
+        action = await package.filter(done=False).actions.order_by('-date', '-order_num').first()
         if action:
             mess += f'{id}. <code>{package.id}</code> - {package.description}\n {action.date}: {action.action}\n'
         id += 1
