@@ -19,7 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       python3-setuptools \
     && pip3 install --upgrade pip --no-cache-dir \
     && locale-gen en_US.UTF-8 \
-    && pip3 install pipenv --no-cache-dir
+    && pip3 install pipenv --no-cache-dir \
     && apt clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
