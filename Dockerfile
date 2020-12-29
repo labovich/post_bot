@@ -20,10 +20,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && pip3 install --upgrade pip --no-cache-dir \
     && locale-gen en_US.UTF-8 \
     && pip3 install pipenv --no-cache-dir
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+WORKDIR /opt
 
 COPY . /opt/app
-
-WORKDIR /opt/app
 
 RUN pipenv sync  \
     && apt autoremove -y ${BUILD_DEPS} \

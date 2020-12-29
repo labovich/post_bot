@@ -8,8 +8,9 @@ from bs4 import BeautifulSoup
 from tortoise.exceptions import DoesNotExist
 
 from models import Package, Action, User
+from settings import ADMIN_CHAT_ID
 
-SELECTED_URL = f'https://webservices.belpost.by/searchBy/'
+SELECTED_URL = f'https://webservices.belpost.by/searchRu/'
 
 Row = collections.namedtuple('Row', 'id date action office order_num')
 
@@ -64,6 +65,8 @@ def parse_page(page):
 
 
 async def get_packages_status(ids=None):
+    from main import bot
+
     if ids is None:
         ids = await Package.filter(done=False).all().values_list('id', flat=True)
 
@@ -72,7 +75,12 @@ async def get_packages_status(ids=None):
     result = await parallel(ids)
 
     for i in result:
-        rows = parse_page(i)
+        try:
+            rows = parse_page(i)
+        except Exception as err:
+            await bot.send_message(ADMIN_CHAT_ID, str(err))
+            raise err
+
         for row in rows:
             try:
                 await Action.get(package_id=row.id, action=row.action)
@@ -83,12 +91,12 @@ async def get_packages_status(ids=None):
                 user = await User.get(packages__id=row.id)
                 print(f'{row.id} - {row.action} created')
 
-                from main import bot
-                message = f'Update status for <code>{row.id}</code> \nstatus {row.action} \noffice {row.office} \ndate {row.date}'
+                package = await action.package
+
+                message = f'Update status for <code>{row.id}</code>\n{package.description}\nstatus {row.action} \noffice {row.office} \ndate {row.date}'
                 await bot.send_message(user.id, message)
 
-                if row.action == 'Уручана':
-                    package = await action.package
+                if row.action == 'Вручено':
                     package.done = True
                     await package.save()
 

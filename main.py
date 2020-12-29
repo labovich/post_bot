@@ -73,7 +73,7 @@ async def add_package(message: types.Message, user):
 async def on_startup(dp):
     await Tortoise.init(settings.TORTOISE_ORM)
     await Tortoise.generate_schemas()
-    scheduler.add_job(get_packages_status, trigger='cron', hour='*/3')
+    scheduler.add_job(get_packages_status, trigger='cron', hour='*')
     scheduler.start()
 
 

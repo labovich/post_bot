@@ -1,6 +1,7 @@
 from envparse import env
 
 API_TOKEN = env.str("API_TOKEN", default="")
+ADMIN_CHAT_ID = env.str("ADMIN_CHAT_ID", default="")
 WEBHOOK_HOST = env.str("WEBHOOK_HOST", default="https://your.domain")
 WEBHOOK_PATH = env.str("WEBHOOK_PATH", default="/path/to/api")
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
