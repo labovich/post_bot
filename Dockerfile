@@ -23,7 +23,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /opt
+WORKDIR /opt/app
 
 COPY . /opt/app
 
