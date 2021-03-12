@@ -45,8 +45,12 @@ def parse_page(page):
 
     grid_info = page.find(id="GridInfo")
 
+    if grid_info is None:
+        grid_info = page.find(id="GridInfo0")
+
     if grid_info:
         order_num = 0
+
         for tr in grid_info.find_all("tr"):
             tds = tr.find_all('td')
             if tds:
