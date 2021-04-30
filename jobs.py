@@ -87,7 +87,7 @@ async def get_packages_status(ids=None):
 
         for row in rows:
             try:
-                await Action.get(package_id=row.id, action=row.action)
+                await Action.get(package_id=row.id, action=row.action, date=row.date, office=row.office)
                 print(f'{row.id} - {row.action} exist')
             except DoesNotExist:
                 action = await Action.create(package_id=row.id, action=row.action,
