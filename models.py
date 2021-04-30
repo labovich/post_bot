@@ -4,7 +4,7 @@ from tortoise import fields
 
 class User(Model):
     id = fields.IntField(pk=True)
-    username = fields.CharField(max_length=128)
+    username = fields.CharField(max_length=128, null=True)
     last_name = fields.CharField(max_length=128)
     first_name = fields.CharField(max_length=128)
     chat_id = fields.IntField()

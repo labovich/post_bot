@@ -1,0 +1,10 @@
+{
+  "upgrade": [
+    "ALTER TABLE \"user\" ALTER COLUMN \"username\" DROP NOT NULL",
+    "ALTER TABLE \"user\" ALTER COLUMN \"username\" TYPE VARCHAR(128)"
+  ],
+  "downgrade": [
+    "ALTER TABLE \"user\" ALTER COLUMN \"username\" SET NOT NULL",
+    "ALTER TABLE \"user\" ALTER COLUMN \"username\" TYPE VARCHAR(128)"
+  ]
+}
