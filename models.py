@@ -5,8 +5,8 @@ from tortoise import fields
 class User(Model):
     id = fields.IntField(pk=True)
     username = fields.CharField(max_length=128, null=True)
-    last_name = fields.CharField(max_length=128)
-    first_name = fields.CharField(max_length=128)
+    last_name = fields.CharField(max_length=128, null=True)
+    first_name = fields.CharField(max_length=128, null=True)
     chat_id = fields.IntField()
     created = fields.DatetimeField(auto_now=True)
 

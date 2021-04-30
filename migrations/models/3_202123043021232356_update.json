@@ -1,0 +1,14 @@
+{
+  "upgrade": [
+    "ALTER TABLE \"user\" ALTER COLUMN \"last_name\" DROP NOT NULL",
+    "ALTER TABLE \"user\" ALTER COLUMN \"last_name\" TYPE VARCHAR(128)",
+    "ALTER TABLE \"user\" ALTER COLUMN \"first_name\" DROP NOT NULL",
+    "ALTER TABLE \"user\" ALTER COLUMN \"first_name\" TYPE VARCHAR(128)"
+  ],
+  "downgrade": [
+    "ALTER TABLE \"user\" ALTER COLUMN \"last_name\" SET NOT NULL",
+    "ALTER TABLE \"user\" ALTER COLUMN \"last_name\" TYPE VARCHAR(128)",
+    "ALTER TABLE \"user\" ALTER COLUMN \"first_name\" SET NOT NULL",
+    "ALTER TABLE \"user\" ALTER COLUMN \"first_name\" TYPE VARCHAR(128)"
+  ]
+}
