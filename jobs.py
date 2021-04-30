@@ -56,7 +56,7 @@ def parse_page(page):
             if tds:
                 order_num += 1
                 date = tds[0].get_text().strip()
-                date = dateparser.parse(date, date_formats=['%d.%m.%Y']).date()
+                date = dateparser.parse(date, date_formats=['%d.%m.%Y', '%Y-%m-%d']).date()
                 action = tds[1].get_text().strip()
                 office = tds[2].get_text().strip()
                 rows.append(Row(id=id, date=date, action=action, office=office, order_num=order_num))
