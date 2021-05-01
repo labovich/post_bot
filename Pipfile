@@ -12,7 +12,7 @@ asyncpg = "*"
 uvloop = "*"
 ujson = "*"
 aiohttp = {extras = ["speedups"], version = "*"}
-aerich = "0.4.2"
+aerich = "==0.2.1"
 apscheduler = "*"
 beautifulsoup4 = "*"
 dateparser = "*"
